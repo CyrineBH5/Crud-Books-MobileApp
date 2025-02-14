@@ -6,7 +6,7 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 import { initDatabase, readBook, updateBook } from '../src/database'; // Importez readBook et updateBook
 
 export default function UpdateBookForm({ route, navigation }: { route: any; navigation: any }) {
-  const { bookId } = route.params; // Récupérer l'ID du livre à mettre à jour
+  const { bookId } = route.params;
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [year, setYear] = useState<Date | null>(null);
