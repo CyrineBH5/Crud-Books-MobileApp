@@ -12,8 +12,8 @@ export async function initDatabase() {
         author TEXT NOT NULL,
         year INTEGER,
         description TEXT,
-        price REAL,  -- Colonne pour le prix
-        image TEXT   -- Colonne pour l'URI de l'image
+        price REAL,  
+        image TEXT   
       );
     `);
     console.log("La table 'books' est prête.");
