@@ -49,7 +49,7 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [3, 4],
       quality: 1,
     });
 
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   imagePreview: {
-    width: '100%',
+    width: '40%',
     height: 200,
     borderRadius: 10,
     borderWidth: 1,

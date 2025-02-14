@@ -47,8 +47,8 @@ const Books = ({ navigation }: { navigation: any }) => {
       'Confirmer la suppression',
       'Êtes-vous sûr de vouloir supprimer ce livre ?',
       [
-        { text: 'Annuler', style: 'cancel' },
-        { text: 'Supprimer', onPress: () => handleDeleteBook(id), style: 'destructive' },
+        { text: 'Non', style: 'cancel' },
+        { text: 'Oui', onPress: () => handleDeleteBook(id), style: 'destructive' },
       ],
       { cancelable: true }
     );
