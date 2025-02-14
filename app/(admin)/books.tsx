@@ -91,7 +91,7 @@ const Books = ({ navigation }: { navigation: any }) => {
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
-          placeholder="Rechercher un livre..."
+          placeholder="Search for a book..."
           value={searchQuery}
           onChangeText={setSearchQuery}
         />

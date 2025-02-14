@@ -60,8 +60,6 @@ export default function RootLayout() {
           <Stack.Screen name="AddBook" component={AddBookForm} />
           <Stack.Screen name="UpdateBook" component={UpdateBookForm} />
           <Stack.Screen name="Books" component={Books} />
-
-
         </Stack.Navigator>
         <StatusBar style="auto" />
       </ThemeProvider>

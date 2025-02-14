@@ -14,11 +14,11 @@ export default function AddBookForm({ navigation }: { navigation: any }) {
   const [image, setImage] = useState<string | null>(null); 
   const [showDatePicker, setShowDatePicker] = useState(false); 
 
-  // Fonction pour sélectionner une image
+  // Function to pick an image
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert('Permission refusée', 'Vous devez autoriser l\'accès à la galerie pour sélectionner une image.');
+      Alert.alert('Permission denied', 'You need to grant access to the gallery to select an image.');
       return;
     }
 
@@ -43,7 +43,7 @@ export default function AddBookForm({ navigation }: { navigation: any }) {
 
   const handleAddBook = async () => {
     if (!title || !author || !year || !description || !price) {
-      Alert.alert('Erreur', 'Veuillez remplir tous les champs');
+      Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
@@ -52,12 +52,12 @@ export default function AddBookForm({ navigation }: { navigation: any }) {
       try {
         const priceNumber = parseFloat(price); 
         if (isNaN(priceNumber)) {
-          Alert.alert('Erreur', 'Le prix doit être un nombre');
+          Alert.alert('Error', 'Price must be a number');
           return;
         }
 
         const bookId = await createBook(db, title, author, year.getFullYear(), description, priceNumber, image);
-        Alert.alert('Succès', `Livre ajouté avec l'ID: ${bookId}`);
+        Alert.alert('Success', `Book added with ID: ${bookId}`);
 
         setTitle('');
         setAuthor('');
@@ -67,8 +67,8 @@ export default function AddBookForm({ navigation }: { navigation: any }) {
         setImage(null);
         navigation.navigate('Books');
       } catch (error) {
-        console.error("Erreur lors de l'ajout du livre :", error);
-        Alert.alert('Erreur', 'Une erreur est survenue lors de l\'ajout du livre');
+        console.error("Error adding book:", error);
+        Alert.alert('Error', 'An error occurred while adding the book');
       }
     }
   };
@@ -77,25 +77,25 @@ export default function AddBookForm({ navigation }: { navigation: any }) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Ionicons name="add-circle" size={32} color="#007bff" />
-        <Text style={styles.headerText}>Créer un nouveau livre</Text>
+        <Text style={styles.headerText}>Create a new Book</Text>
       </View>
 
       <TextInput
         style={styles.input}
-        placeholder="Titre du livre"
+        placeholder="Book Title *"
         value={title}
         onChangeText={setTitle}
       />
       <TextInput
         style={styles.input}
-        placeholder="Auteur du livre"
+        placeholder="Book Author *"
         value={author}
         onChangeText={setAuthor}
       />
       <TouchableOpacity style={styles.datePickerButton} onPress={() => setShowDatePicker(true)}>
         <View style={styles.datePickerContent}>
           <Text style={styles.datePickerText}>
-            {year ? year.toISOString().split('T')[0] : 'Sélectionner une date'}
+            {year ? year.toISOString().split('T')[0] : 'Select a date *'}
           </Text>
           <Ionicons name="calendar" size={24} color="#007bff" />
         </View>
@@ -112,7 +112,7 @@ export default function AddBookForm({ navigation }: { navigation: any }) {
       <View style={styles.priceContainer}>
         <TextInput
           style={[styles.input, styles.priceInput]}
-          placeholder="Prix du livre"
+          placeholder="Book Price *"
           value={price}
           onChangeText={setPrice}
           keyboardType="numeric"
@@ -132,7 +132,7 @@ export default function AddBookForm({ navigation }: { navigation: any }) {
         <View style={styles.imagePickerContent}>
           <Ionicons name="image" size={24} color="#007bff" style={styles.imagePickerIcon} />
           <Text style={styles.imagePickerText}>
-            {image ? 'Changer l\'image' : 'Sélectionner une image'}
+            {image ? 'Change image' : 'Select an image'}
           </Text>
         </View>
       </TouchableOpacity>
@@ -141,7 +141,7 @@ export default function AddBookForm({ navigation }: { navigation: any }) {
           <Image source={{ uri: image }} style={styles.imagePreview} />
         </View>
       )}
-      <Button title="Ajouter le livre" onPress={handleAddBook} />
+      <Button title="Add Book" onPress={handleAddBook} />
     </View>
   );
 }

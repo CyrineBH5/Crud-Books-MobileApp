@@ -94,7 +94,7 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
     <View style={styles.container}>
       <View style={styles.header}>
         <Ionicons name="pencil" size={32} color="#007bff" />
-        <Text style={styles.headerText}>Modifier le livre</Text>
+        <Text style={styles.headerText}>Update a Book </Text>
       </View>
 
       <TextInput
@@ -128,7 +128,7 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
       <View style={styles.priceContainer}>
         <TextInput
           style={[styles.input, styles.priceInput]}
-          placeholder="Prix du livre"
+          placeholder="Price"
           value={price}
           onChangeText={setPrice}
           keyboardType="numeric"
@@ -157,7 +157,7 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
           <Image source={{ uri: image }} style={styles.imagePreview} />
         </View>
       )}
-      <Button title="Mettre à jour le livre" onPress={handleUpdateBook} />
+      <Button title="Edit Book" onPress={handleUpdateBook} />
     </View>
   );
 }
