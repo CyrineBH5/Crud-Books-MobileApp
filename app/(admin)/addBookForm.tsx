@@ -107,7 +107,7 @@ export default function AddBookForm({ navigation }: { navigation: any }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Ionicons name="add-circle" size={32} color="#007bff" />
+        <Ionicons name="add-circle" size={32} color="#3498db" />
         <Text style={styles.headerText}>Create a new Book</Text>
       </View>
 
@@ -128,7 +128,7 @@ export default function AddBookForm({ navigation }: { navigation: any }) {
           <Text style={styles.datePickerText}>
             {year ? year.toISOString().split('T')[0] : 'Select a date *'}
           </Text>
-          <Ionicons name="calendar" size={24} color="#007bff" />
+          <Ionicons name="calendar" size={24} color="#3498db" />
         </View>
       </TouchableOpacity>
       {showDatePicker && (
@@ -172,7 +172,7 @@ export default function AddBookForm({ navigation }: { navigation: any }) {
           <Image source={{ uri: image }} style={styles.imagePreview} />
         </View>
       )}
-      <Button title="Add Book" onPress={handleAddBook} />
+      <Button  title="Add Book" color='#3498db' onPress={handleAddBook} />
     </View>
   );
 }
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 10,
-    color: '#007bff',
+    color: '#3498db',
   },
   input: {
     height: 40,
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   },
   tndText: {
     fontSize: 16,
-    color: '#007bff',
+    color: '#3498db',
     fontWeight: 'bold',
   },
   imagePickerButton: {
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
   },
   imagePickerIcon: {
     marginRight: 10,
-    color: '#007bff',
+    color: '#3498db',
   },
   imagePickerText: {
     color: '#666',

@@ -49,9 +49,9 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
           // Gérer l'année
           const yearValue = parseInt(book.year, 10);
           if (!isNaN(yearValue)) {
-            setYear(new Date(yearValue, 0, 1)); // Convertir l'année en Date
+            setYear(new Date(yearValue, 0, 1)); 
           } else {
-            setYear(new Date()); // Utiliser la date actuelle comme valeur par défaut
+            setYear(new Date()); 
           }
   
           setDescription(book.description);
@@ -60,7 +60,7 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
         } else {
           console.log("Livre non trouvé");
           Alert.alert('Erreur', 'Le livre demandé n\'existe pas');
-          navigation.goBack(); // Rediriger vers l'écran précédent
+          navigation.goBack(); 
         }
       } catch (error) {
         console.error("Erreur lors du chargement des détails du livre :", error);
@@ -143,7 +143,7 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
         const updatedBook = await updateBook(db, bookId, title, author, year.getFullYear(), description, priceNumber, image);
         console.log("updateBook called", updatedBook);  // Vérifier que la méthode update est bien appelée
         
-        Alert.alert('Succès', 'Livre mis à jour avec succès');
+        Alert.alert('Succes', 'Book updated succefully');
         navigation.navigate('Books', { shouldRefresh: true });
       } catch (error) {
         console.error("Erreur lors de la mise à jour du livre :", error);
@@ -156,7 +156,7 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Ionicons name="pencil" size={32} color="#007bff" />
+        <Ionicons name="pencil" size={32} color="#3498db" />
         <Text style={styles.headerText}>Update a Book </Text>
       </View>
 
@@ -177,7 +177,7 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
           <Text style={styles.datePickerText}>
             {year ? year.toISOString().split('T')[0] : 'Sélectionner une date'}
           </Text>
-          <Ionicons name="calendar" size={24} color="#007bff" />
+          <Ionicons name="calendar" size={24} color="#3498db" />
         </View>
       </TouchableOpacity>
       {showDatePicker && (
@@ -209,9 +209,9 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
       />
       <TouchableOpacity style={styles.imagePickerButton} onPress={pickImage}>
         <View style={styles.imagePickerContent}>
-          <Ionicons name="image" size={24} color="#007bff" style={styles.imagePickerIcon} />
+          <Ionicons name="image" size={24} color="#3498db" style={styles.imagePickerIcon} />
           <Text style={styles.imagePickerText}>
-            {image ? 'Changer l\'image' : 'Sélectionner une image'}
+            {image ? 'Change image' : 'Select an image'}
           </Text>
         </View>
       </TouchableOpacity>
@@ -220,7 +220,7 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
           <Image source={{ uri: image }} style={styles.imagePreview} />
         </View>
       )}
-      <Button title="Edit Book" onPress={handleUpdateBook} />
+      <Button title="Edit Book"color='#3498db' onPress={handleUpdateBook} />
     </View>
   );
 }
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 10,
-    color: '#007bff',
+    color: '#3498db',
   },
   input: {
     height: 40,
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
   },
   tndText: {
     fontSize: 16,
-    color: '#007bff',
+    color: '#3498db',
     fontWeight: 'bold',
   },
   imagePickerButton: {
@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
   },
   imagePickerIcon: {
     marginRight: 10,
-    color: '#007bff',
+    color: '#3498db',
   },
   imagePickerText: {
     color: '#666',

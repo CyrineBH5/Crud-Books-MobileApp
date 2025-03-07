@@ -14,6 +14,8 @@ interface CartContextType {
   cart: Book[];
   addToCart: (book: Book) => void;
   updateQuantity: (bookId: string, change: number) => void;
+  clearCart: () => void; // Nouvelle fonction pour vider le panier
+  removeFromCart: (bookId: string) => void; // Ajouter la fonction removeFromCart
 }
 
 // Création du contexte
@@ -49,8 +51,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
   };
 
+  // Fonction pour vider le panier
+  const clearCart = () => {
+    setCart([]);
+  };
+
+  // Fonction pour supprimer un livre du panier
+  const removeFromCart = (bookId: string) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== bookId));
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, updateQuantity }}>
+    <CartContext.Provider value={{ cart, addToCart, updateQuantity, clearCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );
@@ -64,4 +76,3 @@ export const useCart = () => {
   }
   return context;
 };
-    

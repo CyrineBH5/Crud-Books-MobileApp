@@ -4,6 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { initDatabase, readAllBooks, deleteBook } from '../src/database';
 import axios from 'axios';
 import { deleteBookJSON, readAllBooksJSON } from '../src/jsonServer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Book {
   id: number;
@@ -19,19 +20,6 @@ const Books = ({ navigation }: { navigation: any }) => {
   const [books, setBooks] = useState<Book[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // useEffect(() => {
-  //   const loadBooks = async () => {
-  //     try {
-  //       const db = await initDatabase();
-  //       const books = await readAllBooks(db);
-  //       setBooks(books);
-  //     } catch (error) {
-  //       console.error("Erreur lors du chargement des livres :", error);
-  //     }
-  //   };
-
-  //   loadBooks();
-  // }, []);
   useEffect(() => {
     const loadBooks = async () => {
       try {
@@ -61,17 +49,18 @@ const Books = ({ navigation }: { navigation: any }) => {
     loadBooks();
   }, []);
   
-  
-  // const handleDeleteBook = async (id: number) => {
-  //   try {
-  //     const db = await initDatabase();
-  //     await deleteBook(db, id);
-  //     setBooks(books.filter(book => book.id !== id));
-  //   } catch (error) {
-  //     console.error("Erreur lors de la suppression du livre :", error);
-  //     Alert.alert('Erreur', "Une erreur s'est produite lors de la suppression du livre");
-  //   }
-  // };
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('admin');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      });
+    } catch (error) {
+      console.error("Erreur de déconnexion", error);
+    }
+  };
+
 
   const handleDeleteBook = async (id: number) => {
     try {
@@ -134,6 +123,17 @@ const Books = ({ navigation }: { navigation: any }) => {
 
   return (
     <View style={styles.container}>
+      {/* Logout button at the top */}
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerTitle}>Manage Books</Text>
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={handleLogout}
+        >
+          <MaterialIcons name="logout" size={24} color="#fff" />
+        </TouchableOpacity>
+      </View>
+
       {/* Barre de recherche et bouton Ajouter */}
       <View style={styles.searchContainer}>
         <TextInput
@@ -159,7 +159,7 @@ const Books = ({ navigation }: { navigation: any }) => {
       ) : (
         <View style={styles.emptyContainer}>
           <MaterialIcons name="error-outline" size={50} color="#aaa" />
-          <Text style={styles.emptyText}>Livre introuvable</Text>
+          <Text style={styles.emptyText}>Book Not Found</Text>
         </View>
       )}
     </View>
@@ -171,6 +171,24 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: '#f5f5f5',
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  logoutButton: {
+    backgroundColor: '#e74c3c',
+    padding: 8,
+    borderRadius: 6,
   },
   searchContainer: {
     flexDirection: 'row',

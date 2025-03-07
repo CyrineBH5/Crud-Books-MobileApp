@@ -6,13 +6,16 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import BookList from './booklist';
-import DetailsBook from './detailsbook';
-import AjoutPanier from './ajoutpanier';
+import BookList from './(client)/booklist';
+import DetailsBook from './(client)/detailsbook';
+
 import { CartProvider } from './cartprovider';
 import AddBookForm from './(admin)/addBookForm';
 import Books from './(admin)/books';
 import UpdateBookForm from './(admin)/updateBookForm';
+import AjoutPanier from './(client)/ajoutpanier';
+import Login from './login';
+import RegisterScreen from './register';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -53,13 +56,17 @@ export default function RootLayout() {
   return (
     <CartProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack.Navigator initialRouteName='Books' >
+        <Stack.Navigator initialRouteName='Login' >
           <Stack.Screen name="BookList" component={BookList}  />
           <Stack.Screen name="DetailsBook" component={DetailsBook} />
           <Stack.Screen name="AjoutPanier" component={AjoutPanier} />
           <Stack.Screen name="AddBook" component={AddBookForm} />
           <Stack.Screen name="UpdateBook" component={UpdateBookForm} />
           <Stack.Screen name="Books" component={Books} />
+          <Stack.Screen name="Login" component={Login}  />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+
+
         </Stack.Navigator>
         <StatusBar style="auto" />
       </ThemeProvider>
