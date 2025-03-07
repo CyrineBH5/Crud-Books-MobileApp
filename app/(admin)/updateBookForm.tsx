@@ -16,6 +16,27 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   // Charger les détails du livre à mettre à jour
+  // useEffect(() => {
+  //   const loadBookDetails = async () => {
+  //     try {
+  //       const db = await initDatabase();
+  //       const book = await readBook(db, bookId);
+  //       if (book) {
+  //         setTitle(book.title);
+  //         setAuthor(book.author);
+  //         setYear(new Date(book.year, 0, 1)); // Convertir l'année en Date
+  //         setDescription(book.description);
+  //         setPrice(book.price.toString());
+  //         setImage(book.image);
+  //       }
+  //     } catch (error) {
+  //       console.error("Erreur lors du chargement des détails du livre :", error);
+  //       Alert.alert('Erreur', "Une erreur s'est produite lors du chargement des détails du livre");
+  //     }
+  //   };
+
+  //   loadBookDetails();
+  // }, [bookId]);
   useEffect(() => {
     const loadBookDetails = async () => {
       try {
@@ -24,17 +45,29 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
         if (book) {
           setTitle(book.title);
           setAuthor(book.author);
-          setYear(new Date(book.year, 0, 1)); // Convertir l'année en Date
+  
+          // Gérer l'année
+          const yearValue = parseInt(book.year, 10);
+          if (!isNaN(yearValue)) {
+            setYear(new Date(yearValue, 0, 1)); // Convertir l'année en Date
+          } else {
+            setYear(new Date()); // Utiliser la date actuelle comme valeur par défaut
+          }
+  
           setDescription(book.description);
           setPrice(book.price.toString());
           setImage(book.image);
+        } else {
+          console.log("Livre non trouvé");
+          Alert.alert('Erreur', 'Le livre demandé n\'existe pas');
+          navigation.goBack(); // Rediriger vers l'écran précédent
         }
       } catch (error) {
         console.error("Erreur lors du chargement des détails du livre :", error);
         Alert.alert('Erreur', "Une erreur s'est produite lors du chargement des détails du livre");
       }
     };
-
+  
     loadBookDetails();
   }, [bookId]);
 
@@ -65,12 +98,36 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
     }
   };
 
+  // const handleUpdateBook = async () => {
+  //   if (!title || !author || !year || !description || !price) {
+  //     Alert.alert('Erreur', 'Veuillez remplir tous les champs');
+  //     return;
+  //   }
+
+  //   const db = await initDatabase();
+  //   if (db) {
+  //     try {
+  //       const priceNumber = parseFloat(price);
+  //       if (isNaN(priceNumber)) {
+  //         Alert.alert('Erreur', 'Le prix doit être un nombre');
+  //         return;
+  //       }
+
+  //       await updateBook(db, bookId, title, author, year.getFullYear(), description, priceNumber, image);
+  //       Alert.alert('Succès', 'Livre mis à jour avec succès');
+  //       navigation.navigate('Books'); // Rediriger vers la liste des livres
+  //     } catch (error) {
+  //       console.error("Erreur lors de la mise à jour du livre :", error);
+  //       Alert.alert('Erreur', 'Une erreur est survenue lors de la mise à jour du livre');
+  //     }
+  //   }
+  // };
   const handleUpdateBook = async () => {
     if (!title || !author || !year || !description || !price) {
       Alert.alert('Erreur', 'Veuillez remplir tous les champs');
       return;
     }
-
+  
     const db = await initDatabase();
     if (db) {
       try {
@@ -79,16 +136,22 @@ export default function UpdateBookForm({ route, navigation }: { route: any; navi
           Alert.alert('Erreur', 'Le prix doit être un nombre');
           return;
         }
-
-        await updateBook(db, bookId, title, author, year.getFullYear(), description, priceNumber, image);
+        
+        console.log("start update ");
+        
+        // Effectuer la mise à jour
+        const updatedBook = await updateBook(db, bookId, title, author, year.getFullYear(), description, priceNumber, image);
+        console.log("updateBook called", updatedBook);  // Vérifier que la méthode update est bien appelée
+        
         Alert.alert('Succès', 'Livre mis à jour avec succès');
-        navigation.navigate('Books'); // Rediriger vers la liste des livres
+        navigation.navigate('Books', { shouldRefresh: true });
       } catch (error) {
         console.error("Erreur lors de la mise à jour du livre :", error);
         Alert.alert('Erreur', 'Une erreur est survenue lors de la mise à jour du livre');
       }
     }
   };
+  
 
   return (
     <View style={styles.container}>

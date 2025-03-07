@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, Alert, TextInput } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { initDatabase, readAllBooks, deleteBook } from '../src/database';
+import axios from 'axios';
+import { deleteBookJSON, readAllBooksJSON } from '../src/jsonServer';
 
 interface Book {
   id: number;
@@ -17,25 +19,70 @@ const Books = ({ navigation }: { navigation: any }) => {
   const [books, setBooks] = useState<Book[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
+  // useEffect(() => {
+  //   const loadBooks = async () => {
+  //     try {
+  //       const db = await initDatabase();
+  //       const books = await readAllBooks(db);
+  //       setBooks(books);
+  //     } catch (error) {
+  //       console.error("Erreur lors du chargement des livres :", error);
+  //     }
+  //   };
+
+  //   loadBooks();
+  // }, []);
   useEffect(() => {
     const loadBooks = async () => {
       try {
         const db = await initDatabase();
-        const books = await readAllBooks(db);
-        setBooks(books);
+        const booksFromSQLite: Book[] = await readAllBooks(db);
+  
+        // Utiliser la méthode de jsonServer.js pour récupérer les livres
+        const booksFromJSON: Book[] = await readAllBooksJSON();
+  
+        console.log("Livres SQLite :", booksFromSQLite);
+        console.log("Livres JSON Server :", booksFromJSON);
+  
+        // Fusionner les listes sans doublons
+        const uniqueBooks = [...booksFromSQLite];
+        booksFromJSON.forEach((book: Book) => {
+          if (!uniqueBooks.some((b) => b.id === book.id)) {
+            uniqueBooks.push(book);
+          }
+        });
+  
+        setBooks(uniqueBooks);
       } catch (error) {
-        console.error("Erreur lors du chargement des livres :", error);
+        console.error("Erreur lors de la récupération des livres:", error);
       }
     };
-
+  
     loadBooks();
   }, []);
+  
+  
+  // const handleDeleteBook = async (id: number) => {
+  //   try {
+  //     const db = await initDatabase();
+  //     await deleteBook(db, id);
+  //     setBooks(books.filter(book => book.id !== id));
+  //   } catch (error) {
+  //     console.error("Erreur lors de la suppression du livre :", error);
+  //     Alert.alert('Erreur', "Une erreur s'est produite lors de la suppression du livre");
+  //   }
+  // };
 
   const handleDeleteBook = async (id: number) => {
     try {
       const db = await initDatabase();
+  
+      // Supprimer le livre de SQLite
       await deleteBook(db, id);
+      // Mettre à jour l'état local
       setBooks(books.filter(book => book.id !== id));
+  
+      console.log("Livre supprimé avec succès de SQLite");
     } catch (error) {
       console.error("Erreur lors de la suppression du livre :", error);
       Alert.alert('Erreur', "Une erreur s'est produite lors de la suppression du livre");

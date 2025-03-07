@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'; 
 import { initDatabase, createBook } from '../src/database'; 
 
+
 export default function AddBookForm({ navigation }: { navigation: any }) {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
@@ -41,30 +42,59 @@ export default function AddBookForm({ navigation }: { navigation: any }) {
     }
   };
 
+  // const handleAddBook = async () => {
+  //   if (!title || !author || !year || !description || !price) {
+  //     Alert.alert('Error', 'Please fill in all fields');
+  //     return;
+  //   }
+
+  //   const db = await initDatabase();
+  //   if (db) {
+  //     try {
+  //       const priceNumber = parseFloat(price); 
+  //       if (isNaN(priceNumber)) {
+  //         Alert.alert('Error', 'Price must be a number');
+  //         return;
+  //       }
+
+  //       const bookId = await createBook(db, title, author, year.getFullYear(), description, priceNumber, image);
+  //       Alert.alert('Success', `Book added with ID: ${bookId}`);
+
+  //       setTitle('');
+  //       setAuthor('');
+  //       setYear(null);
+  //       setDescription('');
+  //       setPrice('');
+  //       setImage(null);
+  //       navigation.navigate('Books');
+  //     } catch (error) {
+  //       console.error("Error adding book:", error);
+  //       Alert.alert('Error', 'An error occurred while adding the book');
+  //     }
+  //   }
+  // };
   const handleAddBook = async () => {
     if (!title || !author || !year || !description || !price) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
-
+  
     const db = await initDatabase();
     if (db) {
       try {
-        const priceNumber = parseFloat(price); 
-        if (isNaN(priceNumber)) {
-          Alert.alert('Error', 'Price must be a number');
-          return;
-        }
-
-        const bookId = await createBook(db, title, author, year.getFullYear(), description, priceNumber, image);
+        // Ajouter le livre dans SQLite (et JSON Server en même temps)
+        const bookId = await createBook(db, title, author, year, description, price, image);
         Alert.alert('Success', `Book added with ID: ${bookId}`);
-
+  
+        // Réinitialiser les champs du formulaire
         setTitle('');
         setAuthor('');
         setYear(null);
         setDescription('');
         setPrice('');
         setImage(null);
+  
+        // Naviguer vers la liste des livres
         navigation.navigate('Books');
       } catch (error) {
         console.error("Error adding book:", error);
@@ -72,6 +102,7 @@ export default function AddBookForm({ navigation }: { navigation: any }) {
       }
     }
   };
+  
 
   return (
     <View style={styles.container}>
